@@ -54,46 +54,40 @@ Utilizable DSAs/Methods/Approaches:
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 494. Target Sum
+#### Python
+```python
+# 494. Target Sum
 
-// Dynamic Programming, Recursion
-// Runtime: 2ms
+# Dynamic Programming, Recursion
+# Runtime: 2ms
 
-// Complexity:
-// + Time: O(n * target)
-// + Space: O(target)
+# Complexity:
+# + Time: O(n * target)
+# + Space: O(target)
 
-class Solution {
-    public int findTargetSumWays(int[] nums, int target) {
-        int sum = 0;
-        for (int num : nums) {
-            sum += num;
-        }
+from typing import List
 
-        // If target + sum is odd or target is not reachable
-        if ((target + sum) % 2 != 0 || target > sum || target < -sum) {
-            return 0;
-        }
 
-        int subsetSum = (target + sum) / 2;
-        return countSubsets(nums, subsetSum);
-    }
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        total_sum = sum(nums)
 
-    private int countSubsets(int[] nums, int target) {
-        int[] dp = new int[target + 1];
-        dp[0] = 1; // Base case: 1 way to make sum 0
+        # If target + sum is odd or target is not reachable
+        if (target + total_sum) % 2 != 0 or target > total_sum or target < -total_sum:
+            return 0
 
-        for (int num : nums) {
-            for (int j = target; j >= num; j--) {
-                dp[j] += dp[j - num];
-            }
-        }
+        subset_sum = (target + total_sum) // 2
+        return self._count_subsets(nums, subset_sum)
 
-        return dp[target];
-    }
-}
+    def _count_subsets(self, nums: List[int], target: int) -> int:
+        dp = [0] * (target + 1)
+        dp[0] = 1  # Base case: 1 way to make sum 0
+
+        for num in nums:
+            for j in range(target, num - 1, -1):
+                dp[j] += dp[j - num]
+
+        return dp[target]
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

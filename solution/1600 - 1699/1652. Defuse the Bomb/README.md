@@ -58,39 +58,36 @@ Involved Data Structures & Algorithms:
 
 <!-- solution:start -->
 
-#### Java
+#### Python
+```python
+# 1652. Defuse the Bomb
 
-```java
-// 1652. Defuse the Bomb
+# Array, Sliding Window
+# Runtime: 2ms
 
-// Array, Sliding Window
-// Runtime: 2ms
+# Complexity
+# + Time: O(n * |k|)
+# + Space: O(n)
 
-// Complexity
-// + Time: O(n * |k|)
-// + Space: O(n)
+from typing import List
 
-class Solution {
-    public int[] decrypt(int[] code, int k) {
-        int n = code.length;
-        int[] ans = new int[n];
-        if (k == 0) {
-            return ans;
-        }
-        for (int i = 0; i < n; ++i) {
-            if (k > 0) {
-                for (int j = i + 1; j < i + k + 1; ++j) {
-                    ans[i] += code[j % n];
-                }
-            } else {
-                for (int j = i + k; j < i; ++j) {
-                    ans[i] += code[(j + n) % n];
-                }
-            }
-        }
-        return ans;
-    }
-}
+
+class Solution:
+    def decrypt(self, code: List[int], k: int) -> List[int]:
+        n = len(code)
+        ans = [0] * n
+        if k == 0:
+            return ans
+
+        for i in range(n):
+            if k > 0:
+                for j in range(i + 1, i + k + 1):
+                    ans[i] += code[j % n]
+            else:
+                for j in range(i + k, i):
+                    ans[i] += code[(j + n) % n]
+
+        return ans
 ```
 
 <!-- tabs:end -->

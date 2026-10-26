@@ -72,55 +72,42 @@ Hence, the answer to the query is 0.
 
 <!-- solution:start -->
 
-#### Java
+#### Python
+```python
+# 2070. Most Beautiful Item for Each Query
 
-```java
+# Sorting, Prefix Maximums, Binary Search
+# Runtime: 32ms
 
-// import java.util.Arrays;
+# Complexity:
+# + Time: O(n log n + m log n)
+# + Space: O(n)
 
-class Solution {
-    public int[] maximumBeauty(int[][] items, int[] queries) {
-        Arrays.sort(items, (a, b) -> {
-            if (a[0] != b[0]) {
-                return Integer.compare(a[0], b[0]);
-            } else {
-                return Integer.compare(b[1], a[1]); 
-            }
-        });
-        
-        int n = items.length;
-        int[] maxBeauty = new int[n];
-        maxBeauty[0] = items[0][1]; 
-        for (int i = 1; i < n; i++) {
-            maxBeauty[i] = Math.max(maxBeauty[i - 1], items[i][1]);
-        }
-        
-        int m = queries.length;
-        int[] answer = new int[m];
-        
-        for (int i = 0; i < m; i++) {
-            int query = queries[i];
-            int left = 0, right = n - 1;
-            while (left <= right) {
-                int mid = left + (right - left) / 2;
-                if (items[mid][0] <= query) {
-                    left = mid + 1; 
-                } else {
-                    right = mid - 1; 
-                }
-            }
+import bisect
+from typing import List
 
-            if (right >= 0) {
-                answer[i] = maxBeauty[right];
-            } else {
-                answer[i] = 0; 
-            }
-        }
-        
-        return answer;
-    }
-}
 
+class Solution:
+    def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
+        items.sort(key=lambda x: (x[0], -x[1]))
+        n = len(items)
+
+        max_beauty = [0] * n
+        max_beauty[0] = items[0][1]
+        for i in range(1, n):
+            max_beauty[i] = max(max_beauty[i - 1], items[i][1])
+
+        prices = [item[0] for item in items]
+        answer = []
+
+        for q in queries:
+            idx = bisect.bisect_right(prices, q) - 1
+            if idx >= 0:
+                answer.append(max_beauty[idx])
+            else:
+                answer.append(0)
+
+        return answer
 ```
 
 #### Complexity 

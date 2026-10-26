@@ -53,47 +53,45 @@ Utilizable DSAs/Methods/Approaches::
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2054. Two Best Non-Overlapping Events
+#### Python
+```python
+# 2054. Two Best Non-Overlapping Events
 
-// Binary Search, Recursion
-// Runtime: 59ms
+# Binary Search, Recursion / DP
+# Runtime: 59ms
 
-// Complexity:
-// + Time: O(n log(n))
-// + Space: O(n)
+# Complexity:
+# + Time: O(n log(n))
+# + Space: O(n)
 
-class Solution {
-    public int maxTwoEvents(int[][] events) {
-        Arrays.sort(events, (a, b) -> a[0] - b[0]);
-        int[][] dp = new int[events.length][3];
-        for (int[] d : dp) Arrays.fill(d, -1);
-        return findEvents(events, 0, 0, dp);
-    }
+import bisect
+from typing import List
 
-    // Recursive function to find the greatest sum for the pairs.
-    int findEvents(int[][] events, int idx, int cnt, int[][] dp) {
-        if (cnt == 2 || idx >= events.length) return 0;
-        if (dp[idx][cnt] == -1) {
-            int end = events[idx][1];
-            int lo = idx + 1, hi = events.length - 1;
-            while (lo < hi) {
-                int mid = lo + ((hi - lo) >> 1);
-                if (events[mid][0] > end) hi = mid;
-                else lo = mid + 1;
-            }
-            int include =
-                events[idx][2] +
-                (lo < events.length && events[lo][0] > end
-                        ? findEvents(events, lo, cnt + 1, dp)
-                        : 0);
-            int exclude = findEvents(events, idx + 1, cnt, dp);
-            dp[idx][cnt] = Math.max(include, exclude);
-        }
-        return dp[idx][cnt];
-    }
-}
+
+class Solution:
+    def maxTwoEvents(self, events: List[List[int]]) -> int:
+        events.sort(key=lambda x: x[0])
+        n = len(events)
+        starts = [e[0] for e in events]
+        memo = {}
+
+        def find_events(idx: int, cnt: int) -> int:
+            if cnt == 2 or idx >= n:
+                return 0
+            state = (idx, cnt)
+            if state in memo:
+                return memo[state]
+
+            end = events[idx][1]
+            next_idx = bisect.bisect_right(starts, end)
+
+            include = events[idx][2] + find_events(next_idx, cnt + 1)
+            exclude = find_events(idx + 1, cnt)
+
+            memo[state] = max(include, exclude)
+            return memo[state]
+
+        return find_events(0, 0)
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

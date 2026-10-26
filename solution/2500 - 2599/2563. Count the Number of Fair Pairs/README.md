@@ -57,48 +57,33 @@ Involved Data Structures & Algorithms:
 
 <!-- solution:start -->
 
-#### Java
+#### Python
+```python
+# 2563. Count the Number of Fair Pairs
 
-```java
+# Sorting and Two-Pointer / Binary Search
+# Runtime: 62ms
 
-// Sorting and Two-Pointer Technique
-// Runtime: 62ms
+import bisect
+from typing import List
 
-// import java.util.Arrays;
 
-class Solution {
-    public long countFairPairs(int[] nums, int lower, int upper) {
-        Arrays.sort(nums);
-        long count = 0;
-        int n = nums.length;
+class Solution:
+    def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
+        nums.sort()
+        count = 0
+        n = len(nums)
 
-        for (int i = 0; i < n; i++) {
-            int left = lower - nums[i];
-            int right = upper - nums[i];
+        for i in range(n):
+            left_target = lower - nums[i]
+            right_target = upper - nums[i]
 
-            // Use binary search to find the valid range of j
-            int jStart = findFirstIndex(nums, left, i + 1, n);
-            int jEnd = findFirstIndex(nums, right + 1, i + 1, n);
+            j_start = bisect.bisect_left(nums, left_target, i + 1, n)
+            j_end = bisect.bisect_right(nums, right_target, i + 1, n)
 
-            count += jEnd - jStart; // count valid pairs
-        }
+            count += j_end - j_start
 
-        return count;
-    }
-
-    private int findFirstIndex(int[] nums, int target, int start, int end) {
-        while (start < end) {
-            int mid = start + (end - start) / 2;
-            if (nums[mid] < target) {
-                start = mid + 1;
-            } else {
-                end = mid;
-            }
-        }
-        return start; // this will be the first index >= target
-    }
-}
-
+        return count
 ```
 
 #### Complexity 

@@ -5,7 +5,13 @@
 .vitepress
 .cache
 *.iml
-__pycache__
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+env/
+venv/
 /node_modules
 /solution/result.json
 /solution/__pycache__

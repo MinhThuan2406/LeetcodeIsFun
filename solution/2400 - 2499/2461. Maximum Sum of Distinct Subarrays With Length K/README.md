@@ -52,51 +52,44 @@ We return 0 because no subarrays meet the conditions.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2461. Maximum Sum of Distinct Subarrays With Length K
+#### Python
+```python
+# 2461. Maximum Sum of Distinct Subarrays With Length K
 
-// HashSet, Sliding Window
-// Runtime: 33ms
+# HashSet, Sliding Window
+# Runtime: 33ms
 
-// Complexity
-// + Time: O(n), with n is the length of array nums
-// + Space: O(k), for the HashSet storing at most k elements.
+# Complexity
+# + Time: O(n)
+# + Space: O(k)
 
-class Solution {
-    public long maximumSubarraySum(int[] nums, int k) {
-        long maxSum = 0;
-        long currentSum = 0;
-        Set<Integer> uniqueElements = new HashSet<>();
-        
-        int start = 0; // Start of the window
-        for (int end = 0; end < nums.length; end++) {
-            // Add the current element to the window
-            currentSum += nums[end];
-            
-            // Handle duplicates
-            while (uniqueElements.contains(nums[end])) {
-                currentSum -= nums[start];
-                uniqueElements.remove(nums[start]);
-                start++;
-            }
-            
-            uniqueElements.add(nums[end]);
-            
-            // Check if the window is valid (size k)
-            if (end - start + 1 == k) {
-                maxSum = Math.max(maxSum, currentSum);
-                
-                // Slide the window by removing the leftmost element
-                currentSum -= nums[start];
-                uniqueElements.remove(nums[start]);
-                start++;
-            }
-        }
-        
-        return maxSum;
-    }
-}
+from typing import List
+
+
+class Solution:
+    def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+        max_sum = 0
+        current_sum = 0
+        unique_elements = set()
+
+        start = 0
+        for end in range(len(nums)):
+            current_sum += nums[end]
+
+            while nums[end] in unique_elements:
+                current_sum -= nums[start]
+                unique_elements.remove(nums[start])
+                start += 1
+
+            unique_elements.add(nums[end])
+
+            if end - start + 1 == k:
+                max_sum = max(max_sum, current_sum)
+                current_sum -= nums[start]
+                unique_elements.remove(nums[start])
+                start += 1
+
+        return max_sum
 ```
 
 <!-- tabs:end -->

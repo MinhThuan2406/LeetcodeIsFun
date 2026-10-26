@@ -64,65 +64,55 @@ end<sub>1</sub> = 1 == 1 = start<sub>2</sub>
 <!-- solution:start -->
 #### 1/ Hierholzer's Algorithm
 <!-- tabs:start -->
-##### Java
-```java
-// 2097. Valid Arrangement of Pairs
+##### Python
+```python
+# 2097. Valid Arrangement of Pairs
 
-// Hierholzer's Algorithm
-// Runtime: 169ms
+# Hierholzer's Algorithm (Eulerian Path)
+# Runtime: 169ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-import java.util.*;
+from collections import defaultdict, deque
+from typing import List
 
-class Solution {
-    public int[][] validArrangement(int[][] pairs) {
-        // Step 1: Build adjacency list and degree maps
-        Map<Integer, Stack<Integer>> graph = new HashMap<>();
-        Map<Integer, Integer> outDegree = new HashMap<>();
-        Map<Integer, Integer> inDegree = new HashMap<>();
-        
-        for (int[] pair : pairs) {
-            int start = pair[0], end = pair[1];
-            graph.putIfAbsent(start, new Stack<>());
-            graph.get(start).push(end);
-            outDegree.put(start, outDegree.getOrDefault(start, 0) + 1);
-            inDegree.put(end, inDegree.getOrDefault(end, 0) + 1);
-        }
-        
-        // Step 2: Find the starting node
-        int startNode = pairs[0][0]; // Default start
-        for (int node : graph.keySet()) {
-            if (outDegree.getOrDefault(node, 0) - inDegree.getOrDefault(node, 0) == 1) {
-                startNode = node;
-                break;
-            }
-        }
-        
-        // Step 3: Perform Hierholzer's algorithm
-        List<int[]> result = new ArrayList<>();
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(startNode);
-        
-        while (!stack.isEmpty()) {
-            int node = stack.peek();
-            if (graph.containsKey(node) && !graph.get(node).isEmpty()) {
-                stack.push(graph.get(node).pop());
-            } else {
-                stack.pop();
-                if (!stack.isEmpty()) {
-                    result.add(new int[]{stack.peek(), node});
-                }
-            }
-        }
-        
-        // Step 4: Return result
-        Collections.reverse(result);
-        return result.toArray(new int[0][0]);
-    }
-}
+
+class Solution:
+    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
+        # Step 1: Build adjacency list and degree maps
+        graph = defaultdict(deque)
+        in_degree = defaultdict(int)
+        out_degree = defaultdict(int)
+
+        for start, end in pairs:
+            graph[start].append(end)
+            out_degree[start] += 1
+            in_degree[end] += 1
+
+        # Step 2: Find starting node
+        start_node = pairs[0][0]
+        for node in graph:
+            if out_degree[node] - in_degree[node] == 1:
+                start_node = node
+                break
+
+        # Step 3: Hierholzer's algorithm
+        result = []
+        stack = [start_node]
+
+        while stack:
+            node = stack[-1]
+            if graph[node]:
+                stack.append(graph[node].pop())
+            else:
+                curr = stack.pop()
+                if stack:
+                    result.append([stack[-1], curr])
+
+        result.reverse()
+        return result
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

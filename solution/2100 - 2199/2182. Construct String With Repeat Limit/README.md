@@ -56,62 +56,45 @@ Note that the string &quot;bbabaaa&quot; is lexicographically larger but the let
 ## Solutions
 <!-- solution:start --
 <!-- tabs:start -->
-#### Java
-```java
-// 2182. Construct String With Repeat Limit
+#### Python
+```python
+# 2182. Construct String With Repeat Limit
 
-// Priority Queue (Max-Heap)
-// Runtime: 32ms
+# Priority Queue (Max-Heap)
+# Runtime: 32ms
 
-// Complexity:
-// + Time: O(k * log(n))
-// + Space: O(n)
+# Complexity:
+# + Time: O(k * log(n))
+# + Space: O(n)
 
-import java.util.*;
+from collections import Counter
+import heapq
 
-class Solution {
-    public String repeatLimitedString(String s, int repeatLimit) {
-        int[] freq = new int[26];
-        for (char c : s.toCharArray()) {
-            freq[c - 'a']++;
-        }
 
-        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
-        for (char i = 'a'; i <= 'z'; i++) {
-            if (freq[i - 'a'] > 0) {
-                maxHeap.offer(new int[]{i, freq[i - 'a']});
-            }
-        }
+class Solution:
+    def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
+        freq = Counter(s)
+        # Max-heap: (-ord(ch), ch, count)
+        max_heap = [(-ord(ch), ch, count) for ch, count in freq.items()]
+        heapq.heapify(max_heap)
 
-        StringBuilder result = new StringBuilder();
+        result = []
 
-        while (!maxHeap.isEmpty()) {
-            int[] current = maxHeap.poll();
-            char ch = (char) current[0];
-            int count = Math.min(current[1], repeatLimit);
+        while max_heap:
+            neg_ord, ch, count = heapq.heappop(max_heap)
+            take = min(count, repeatLimit)
+            result.append(ch * take)
 
-            for (int i = 0; i < count; i++) {
-                result.append(ch);
-            }
+            if count > repeatLimit:
+                if not max_heap:
+                    break
+                neg_ord2, ch2, count2 = heapq.heappop(max_heap)
+                result.append(ch2)
+                if count2 > 1:
+                    heapq.heappush(max_heap, (neg_ord2, ch2, count2 - 1))
+                heapq.heappush(max_heap, (neg_ord, ch, count - repeatLimit))
 
-            if (current[1] > repeatLimit) {
-                if (maxHeap.isEmpty()) break;
-
-                int[] next = maxHeap.poll();
-                result.append((char) next[0]);
-                next[1]--;
-
-                if (next[1] > 0) {
-                    maxHeap.offer(next);
-                }
-
-                maxHeap.offer(new int[]{ch, current[1] - repeatLimit});
-            }
-        }
-
-        return result.toString();
-    }
-}
+        return "".join(result)
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

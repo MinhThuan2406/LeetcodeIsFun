@@ -35,100 +35,82 @@ Given a 0-indexed integer array `nums`, create an algorithm that makes `nums` st
 ### Helper Functions
 #### Prime Validator
 Checks if a number is prime:
-```java
-private boolean isPrime(int n) {
-    if (n <= 1) return false;
-    for (int i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i == 0) return false;
-    }
-    return true;
-}
+```python
+def is_prime(n: int) -> bool:
+    if n <= 1:
+        return False
+    for i in range(2, int(math.isqrt(n)) + 1):
+        if n % i == 0:
+            return False
+    return True
 ```
 
 #### Largest Prime Finder
 Finds the largest prime number less than a given number:
-```java
-private int findLargestPrime(int n) {
-    for (int i = n - 1; i >= 2; i--) {
-        if (isPrime(i)) return i;
-    }
-    return 0;
-}
+```python
+def find_largest_prime(n: int) -> int:
+    for i in range(n - 1, 1, -1):
+        if is_prime(i):
+            return i
+    return 0
 ```
 
 ### Main Function
-```java
-public boolean primeSubOperation(int[] nums) {
-    int prev = 0;  // Initialize `prev` to track last modified element
+```python
+def primeSubOperation(nums: list[int]) -> bool:
+    prev = 0  # Initialize `prev` to track last modified element
 
-    for (int i = 0; i < nums.length; i++) {
-        if (nums[i] <= prev) return false;  // If `nums[i]` is not greater than `prev`, return false
+    for i in range(len(nums)):
+        if nums[i] <= prev:
+            return False  # If `nums[i]` is not greater than `prev`, return false
 
-        int maxSubtract = nums[i] - prev - 1;  // Calculate max possible value to subtract
+        max_subtract = nums[i] - prev - 1  # Calculate max possible value to subtract
 
-        if (maxSubtract > 0) {
-            int prime = findLargestPrime(maxSubtract + 1);  // Find the largest prime within the limit
-            if (prime > 0) nums[i] -= prime;  // Subtract prime if found
-        }
+        if max_subtract > 0:
+            prime = find_largest_prime(max_subtract + 1)  # Find largest prime within limit
+            if prime > 0:
+                nums[i] -= prime  # Subtract prime if found
 
-        prev = nums[i];  // Update `prev` to current element
-    }
-    return true;
-}
+        prev = nums[i]  # Update `prev` to current element
+
+    return True
 ```
 ### Full Code
-```java
-class Solution {
-    // Helper function to check if a number is prime
-    private boolean isPrime(int n) {
-        if (n <= 1) return false;
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) return false;
-        }
-        return true;
-    }
-    
-    // Find largest prime number less than n
-    private int findLargestPrime(int n) {
-        for (int i = n - 1; i >= 2; i--) {
-            if (isPrime(i)) return i;
-        }
-        return 0;
-    }
-    
-    public boolean primeSubOperation(int[] nums) {
-        int n = nums.length;
-        
-        // Start from the first element
-        int prev = 0;
-        
-        for (int i = 0; i < n; i++) {
-            // If current number is not greater than previous, operation is impossible
-            if (nums[i] <= prev) return false;
-            
-            // Find the maximum value we can subtract while keeping array strictly increasing
-            int maxSubtract = nums[i] - prev - 1;
-            
-            // If no subtraction needed, continue
-            if (maxSubtract <= 0) {
-                prev = nums[i];
-                continue;
-            }
-            
-            // Find largest prime less than or equal to maxSubtract
-            int prime = findLargestPrime(maxSubtract + 1);
-            
-            // Subtract prime if found
-            if (prime > 0) {
-                nums[i] -= prime;
-            }
-            
-            prev = nums[i];
-        }
-        
-        return true;
-    }
-}
+```python
+import math
+from typing import List
+
+
+class Solution:
+    def _is_prime(self, n: int) -> bool:
+        if n <= 1:
+            return False
+        for i in range(2, int(math.isqrt(n)) + 1):
+            if n % i == 0:
+                return False
+        return True
+
+    def _find_largest_prime(self, n: int) -> int:
+        for i in range(n - 1, 1, -1):
+            if self._is_prime(i):
+                return i
+        return 0
+
+    def primeSubOperation(self, nums: List[int]) -> bool:
+        prev = 0
+
+        for i in range(len(nums)):
+            if nums[i] <= prev:
+                return False
+
+            max_subtract = nums[i] - prev - 1
+            if max_subtract > 0:
+                prime = self._find_largest_prime(max_subtract + 1)
+                nums[i] -= prime
+
+            prev = nums[i]
+
+        return True
 ```
 
 ## Complexity Analysis

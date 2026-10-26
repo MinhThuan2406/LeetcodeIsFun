@@ -50,46 +50,32 @@ Utilizable DSAs:
 <!-- solution:start -->
 <!-- tabs:start -->
 
-#### Java
-```java
-// 1072. Flip Columns For Maximum Number of Equal Rows
+#### Python
+```python
+# 1072. Flip Columns For Maximum Number of Equal Rows
 
-// Pattern Matching with BitMask
-// Runtime: 24ms
+# Matrix, Pattern Matching, Hash Map
+# Runtime: 31ms
 
-// Complexity:
-// + Time: O(m * n), with m is the number of rows and n is the number of columns in the matrix
-// + Space: O(m * n), m and n have the same meaning to the time complexity
+# Complexity
+# + Time: O(m * n)
+# + Space: O(m * n)
 
-import java.util.Map;
-import java.util.HashMap;
+from collections import defaultdict
+from typing import List
 
-class Solution {
-    public int maxEqualRowsAfterFlips(int[][] matrix) {
-        Map<String, Integer> patterns = new HashMap<>();
-        int m = matrix.length;
-        int n = matrix[0].length;
 
-        for (int i = 0; i < m; i++) {
-            StringBuilder pattern = new StringBuilder();
-            int firstBit = matrix[i][0];
+class Solution:
+    def maxEqualRowsAfterFlips(self, matrix: List[List[int]]) -> int:
+        patterns = defaultdict(int)
 
-            for (int j = 0; j < n; j++) {
-                pattern.append(matrix[i][j] ^ firstBit);
-            }
+        for row in matrix:
+            first_bit = row[0]
+            # Normalize pattern relative to the first element
+            pattern = tuple(val ^ first_bit for val in row)
+            patterns[pattern] += 1
 
-            String key = pattern.toString();
-            patterns.put(key, patterns.getOrDefault(key, 0) + 1);
-        }
-
-        int maxRows = 0;
-        for (int count : patterns.values()) {
-            maxRows = Math.max(maxRows, count);
-        }
-
-        return maxRows;
-    }
-}
+        return max(patterns.values(), default=0)
 ```
 
 <!-- tabs:end -->

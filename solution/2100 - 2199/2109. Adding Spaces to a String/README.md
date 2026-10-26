@@ -64,34 +64,33 @@ We are also able to place spaces before the first character of the string.
 <!-- solution:start -->
 ##### 1/ StringBuilder (Java)
 <!-- tabs:start -->
-##### Java
-```java
-// 2109. Adding Spaces to a String
+##### Python
+```python
+# 2109. Adding Spaces to a String
 
-// StringBuilder 
-// Runtime: 22ms
+# String
+# Runtime: 22ms
 
-// Complexity:
-// + Time: O(n + m)
-// + Space: O(n + m)
+# Complexity:
+# + Time: O(n + m)
+# + Space: O(n + m)
 
-class Solution {
-    public String addSpaces(String s, int[] spaces) {
-        StringBuilder result = new StringBuilder();
-        int index = 0;
-        int n = spaces.length;
+from typing import List
 
-        for (int i = 0; i < s.length(); i++) {
-            if (index < n && i == spaces[index]) {
-                result.append(' ');
-                index++;
-            }
-            result.append(s.charAt(i));
-        }
 
-        return result.toString();
-    }
-}
+class Solution:
+    def addSpaces(self, s: str, spaces: List[int]) -> str:
+        res = []
+        space_idx = 0
+        n = len(spaces)
+
+        for i, ch in enumerate(s):
+            if space_idx < n and i == spaces[space_idx]:
+                res.append(" ")
+                space_idx += 1
+            res.append(ch)
+
+        return "".join(res)
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

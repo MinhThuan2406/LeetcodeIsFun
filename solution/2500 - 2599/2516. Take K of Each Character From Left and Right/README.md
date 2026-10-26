@@ -45,60 +45,46 @@ It can be proven that 8 is the minimum number of minutes needed.
 <!-- solution:start -->
 <!-- tabs:start -->
 
-#### Java
-```java
-// 2516. Take K of Each Character From Left and Right
+#### Python
+```python
+# 2516. Take K of Each Character From Left and Right
 
-// Sliding Window
-// Runtime: 17ms
+# Sliding Window
+# Runtime: 17ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n)
+# + Space: O(1)
 
-class Solution {
-    public int takeCharacters(String s, int k) {
-        if (k == 0)
-            return 0; // No characters needed.
 
-        int n = s.length();
-        int[] count = new int[3]; // Count of 'a', 'b', 'c'
+class Solution:
+    def takeCharacters(self, s: str, k: int) -> int:
+        if k == 0:
+            return 0
 
-        // Count total frequencies of 'a', 'b', and 'c'.
-        for (char c : s.toCharArray()) {
-            count[c - 'a']++;
-        }
+        n = len(s)
+        count = [0] * 3
 
-        // If any character's total count is less than k, return -1.
-        for (int i = 0; i < 3; i++) {
-            if (count[i] < k)
-                return -1;
-        }
+        for c in s:
+            count[ord(c) - ord("a")] += 1
 
-        // Sliding window to find the longest valid substring.
-        int[] windowCount = new int[3];
-        int maxWindowSize = 0;
-        int left = 0;
+        if any(c < k for c in count):
+            return -1
 
-        for (int right = 0; right < n; right++) {
-            windowCount[s.charAt(right) - 'a']++;
+        window_count = [0] * 3
+        max_window_size = 0
+        left = 0
 
-            // Shrink the window if the outside counts fall below k.
-            while (count[0] - windowCount[0] < k ||
-                    count[1] - windowCount[1] < k ||
-                    count[2] - windowCount[2] < k) {
-                windowCount[s.charAt(left) - 'a']--;
-                left++;
-            }
+        for right in range(n):
+            window_count[ord(s[right]) - ord("a")] += 1
 
-            // Update the maximum window size.
-            maxWindowSize = Math.max(maxWindowSize, right - left + 1);
-        }
+            while any(count[i] - window_count[i] < k for i in range(3)):
+                window_count[ord(s[left]) - ord("a")] -= 1
+                left += 1
 
-        // Minimum minutes = total length - max window size.
-        return n - maxWindowSize;
-    }
-}
+            max_window_size = max(max_window_size, right - left + 1)
+
+        return n - max_window_size
 ```
 
 <!-- tabs:end -->

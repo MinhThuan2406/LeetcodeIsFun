@@ -58,65 +58,62 @@ The beauty of the array nums is 4 (whole array).
 <!-- solution:start -->
 ### 1. Sorting and Sliding Window
 <!-- tabs:start -->
-#### Java
-```java
-// Runtime: 39ms
+#### Python
+```python
+# 2779. Maximum Beauty of an Array After Applying Operation
 
-// Complexity:
-// + Time: O(n log(n))
-// + Space: O(1)
+# Sorting and Sliding Window
+# Runtime: 39ms
 
-import java.util.Arrays;
+# Complexity:
+# + Time: O(n log(n))
+# + Space: O(1)
 
-class Solution {
-    public int maximumBeauty(int[] nums, int k) {
-        Arrays.sort(nums);
-        int maxBeauty = 0, left = 0;
+from typing import List
 
-        for (int right = 0; right < nums.length; right++) {
-            while (nums[right] - nums[left] > 2 * k) {
-                left++;
-            }
-            maxBeauty = Math.max(maxBeauty, right - left + 1);
-        }
-        return maxBeauty;
-    }
-}
+
+class Solution:
+    def maximumBeauty(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        max_beauty = 0
+        left = 0
+
+        for right in range(len(nums)):
+            while nums[right] - nums[left] > 2 * k:
+                left += 1
+            max_beauty = max(max_beauty, right - left + 1)
+
+        return max_beauty
 ```
 
 ### 2. Frequency Map
 <!-- tabs:start -->
-#### Java
-```java
-// This solution is not recommended due to the large runtime. For references only.
+#### Python
+```python
+# 2779. Maximum Beauty of an Array After Applying Operation
 
-// Runtime: 389ms
+# Sorting and Sliding Window
+# Runtime: 39ms
 
-// Complexity:
-// + Time: O(n log(n))
-// + Space: O(n)
+# Complexity:
+# + Time: O(n log(n))
+# + Space: O(1)
 
-import java.util.TreeMap;
+from typing import List
 
-class Solution {
-    public int maximumBeauty(int[] nums, int k) {
-        TreeMap<Integer, Integer> freq = new TreeMap<>();
-        int maxBeauty = 0;
 
-        for (int num : nums) {
-            freq.put(num - k, freq.getOrDefault(num - k, 0) + 1);
-            freq.put(num + k + 1, freq.getOrDefault(num + k + 1, 0) - 1);
-        }
+class Solution:
+    def maximumBeauty(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        max_beauty = 0
+        left = 0
 
-        int current = 0;
-        for (int count : freq.values()) {
-            current += count;
-            maxBeauty = Math.max(maxBeauty, current);
-        }
+        for right in range(len(nums)):
+            while nums[right] - nums[left] > 2 * k:
+                left += 1
+            max_beauty = max(max_beauty, right - left + 1)
 
-        return maxBeauty;
-    }
-}
+        return max_beauty
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

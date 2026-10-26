@@ -68,18 +68,17 @@ class Solution {
 
 ##### Python
 ```python
-// Number of name of the problem
+# Number of name of the problem
 
-// Name of the method/DSA/approach used for solving
-// Runtime from leetcode
+# Name of the method/DSA/approach used for solving
+# Runtime from leetcode
 
-// Complexity:
-// + Time:
-// + Space:
+# Complexity:
+# + Time:
+# + Space:
 
-def Solution {
-
-}
+class Solution:
+    pass
 ```
 
 ##### C++

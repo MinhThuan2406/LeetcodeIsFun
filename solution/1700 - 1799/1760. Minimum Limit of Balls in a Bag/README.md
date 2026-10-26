@@ -58,49 +58,40 @@ The bag with the most number of balls has 2 balls, so your penalty is 2, and you
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
+#### Python
+```python
+# 1760. Minimum Limit of Balls in a Bag
 
-```java
-// 1760. Minimum Limit of Balls in a Bag
+# Binary Search
+# Runtime: 27ms
 
-// Binary Search
-// Runtime: 27ms
+# Complexity:
+# + Time: O(n * log(max(nums)))
+# + Space: O(1)
 
-// Complexity:
-// + Time:
-// + Space:
+from typing import List
 
-class Solution {
-    private boolean canDistribute(int[] nums, int maxOperations, int penalty) {
-        int operations = 0;
-        for (int balls : nums) {
-            if (balls > penalty) {
-                operations += (balls - 1) / penalty; 
-            }
-            if (operations > maxOperations) {
-                return false; 
-            }
-        }
-        return true;
-    }
 
-    public int minimumSize(int[] nums, int maxOperations) {
-        int left = 1, right = Integer.MIN_VALUE;
-        for (int num : nums) {
-            right = Math.max(right, num); 
-        }
+class Solution:
+    def minimumSize(self, nums: List[int], maxOperations: int) -> int:
+        def can_distribute(penalty: int) -> bool:
+            operations = 0
+            for balls in nums:
+                if balls > penalty:
+                    operations += (balls - 1) // penalty
+                if operations > maxOperations:
+                    return False
+            return True
 
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (canDistribute(nums, maxOperations, mid)) {
-                right = mid; 
-            } else {
-                left = mid + 1; 
-            }
-        }
-        return left; 
-    }
-}
+        left, right = 1, max(nums)
+        while left < right:
+            mid = left + (right - left) // 2
+            if can_distribute(mid):
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

@@ -57,52 +57,44 @@ Note that there may be other ways to remove 2 obstacles to create a path.
 
 ## Solutions
 <!-- solution:start -->
-#### Java
-```java
-// 2290. Minimum Obstacle Removal to Reach Corner
+#### Python
+```python
+# 2290. Minimum Obstacle Removal to Reach Corner
 
-// BFS
-// Runtime: 51ms
+# BFS (0-1)
+# Runtime: 51ms
 
-// Complexity:
-// + Time: O(m * n)
-// + Space: O(m * n)
+# Complexity:
+# + Time: O(m * n)
+# + Space: O(m * n)
 
-import java.util.*;
+from collections import deque
+from typing import List
 
-class Solution {
-    public int minimumObstacles(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-        int[][] dist = new int[m][n];
-        for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
 
-        Deque<int[]> deque = new ArrayDeque<>();
-        deque.offer(new int[]{0, 0});
-        dist[0][0] = 0;
+class Solution:
+    def minimumObstacles(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dist = [[float("inf")] * n for _ in range(m)]
+        dist[0][0] = 0
 
-        while (!deque.isEmpty()) {
-            int[] curr = deque.pollFirst();
-            int x = curr[0], y = curr[1];
-            for (int[] dir : directions) {
-                int nx = x + dir[0], ny = y + dir[1];
-                if (nx >= 0 && ny >= 0 && nx < m && ny < n) {
-                    int newDist = dist[x][y] + grid[nx][ny];
-                    if (newDist < dist[nx][ny]) {
-                        dist[nx][ny] = newDist;
-                        if (grid[nx][ny] == 0) {
-                            deque.offerFirst(new int[]{nx, ny});
-                        } else {
-                            deque.offerLast(new int[]{nx, ny});
-                        }
-                    }
-                }
-            }
-        }
+        dq = deque([(0, 0)])
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-        return dist[m - 1][n - 1];
-    }
-}
+        while dq:
+            x, y = dq.popleft()
+            for dx, dy in directions:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < m and 0 <= ny < n:
+                    new_dist = dist[x][y] + grid[nx][ny]
+                    if new_dist < dist[nx][ny]:
+                        dist[nx][ny] = new_dist
+                        if grid[nx][ny] == 0:
+                            dq.appendleft((nx, ny))
+                        else:
+                            dq.append((nx, ny))
+
+        return dist[m - 1][n - 1]
 ```
 <!-- solution:end -->
 <!-- problem:end -->

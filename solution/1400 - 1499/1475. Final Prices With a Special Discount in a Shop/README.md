@@ -56,33 +56,32 @@ For items 3 and 4 you will not receive any discount at all.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 1475. Final Prices With a Special Discount in a Shop
+#### Python
+```python
+# 1475. Final Prices With a Special Discount in a Shop
 
-// Deque (Stack)
-// Monotonic Stack, Iteration
-// Runtime: 3ms
+# Deque (Stack)
+# Monotonic Stack, Iteration
+# Runtime: 3ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-class Solution {
-    public int[] finalPrices(int[] prices) {
-      int[] ans = prices.clone();
-      Deque<Integer> stack = new ArrayDeque<>();
-  
-      for (int j = 0; j < prices.length; ++j) {
-        // stack[-1] := i in the problem description.
-        while (!stack.isEmpty() && prices[j] <= prices[stack.peek()])
-          ans[stack.pop()] -= prices[j];
-        stack.push(j);
-      }
-  
-      return ans;
-    }
-  }
+from typing import List
+
+
+class Solution:
+    def finalPrices(self, prices: List[int]) -> List[int]:
+        ans = prices[:]
+        stack = []
+
+        for j in range(len(prices)):
+            while stack and prices[j] <= prices[stack[-1]]:
+                ans[stack.pop()] -= prices[j]
+            stack.append(j)
+
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

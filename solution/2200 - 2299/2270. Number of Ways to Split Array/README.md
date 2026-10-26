@@ -4,40 +4,32 @@
 <!-- solution:start -->
 #### 1/ Prefix and Suffix Sum
 <!-- tabs:start -->
-##### Java
-```java
-// 2270. Number of Ways to Split Array
+##### Python
+```python
+# 2270. Number of Ways to Split Array
 
-// Prefix and Suffix Sum
-// Runtime: 4ms
+# Prefix and Suffix Sum
+# Runtime: 4ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n)
+# + Space: O(1)
 
-class Solution {
-    public int waysToSplitArray(int[] nums) {
-        int n = nums.length;
-        long totalSum = 0, prefixSum = 0;
-        int validSplits = 0;
+from typing import List
 
-        // Calculate the total sum of the array
-        for (int num : nums) {
-            totalSum += num;
-        }
 
-        // Iterate to find valid splits
-        for (int i = 0; i < n - 1; i++) {
-            prefixSum += nums[i];
-            long rightSum = totalSum - prefixSum;
-            if (prefixSum >= rightSum) {
-                validSplits++;
-            }
-        }
+class Solution:
+    def waysToSplitArray(self, nums: List[int]) -> int:
+        total_sum = sum(nums)
+        prefix_sum = 0
+        valid_splits = 0
 
-        return validSplits;
-    }
-}
+        for i in range(len(nums) - 1):
+            prefix_sum += nums[i]
+            if prefix_sum >= total_sum - prefix_sum:
+                valid_splits += 1
+
+        return valid_splits
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

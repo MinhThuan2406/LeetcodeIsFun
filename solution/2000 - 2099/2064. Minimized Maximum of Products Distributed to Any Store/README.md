@@ -72,49 +72,35 @@ The maximum number of products given to any store is max(100000) = 100000.
 
 <!-- solution:start -->
 
-#### Java
+#### Python
+```python
+# 2064. Minimized Maximum of Products Distributed to Any Store
 
-```java
-// 2064. Minimized Maximum of Products Distributed to Any Store
+# Binary Search
+# Runtime: 22ms
 
-// Binary Search
-// Runtime: 22ms
+# Complexity:
+# + Time: O(m * log(max_quantity))
+# + Space: O(1)
 
-// Complexity:
-// + Time: O(mlog(max quantity))
-// + Space: O(1)
+from typing import List
 
-class Solution {
-    public int minimizedMaximum(int n, int[] quantities) {
-        int left = 1; 
-        int right = 0; 
-        for (int quantity : quantities) {
-            right = Math.max(right, quantity);
-        }
-        
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (canDistribute(quantities, n, mid)) {
-                right = mid; 
-            } else {
-                left = mid + 1; 
-            }
-        }
-        
-        return left; 
-    }
-    
-    private boolean canDistribute(int[] quantities, int n, int x) {
-        int storesNeeded = 0;
-        for (int quantity : quantities) {
-            storesNeeded += (quantity + x - 1) / x; 
-            if (storesNeeded > n) { 
-                return false;
-            }
-        }
-        return storesNeeded <= n;
-    }
-}
+
+class Solution:
+    def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
+        def can_distribute(x: int) -> bool:
+            stores_needed = sum((q + x - 1) // x for q in quantities)
+            return stores_needed <= n
+
+        left, right = 1, max(quantities)
+        while left < right:
+            mid = left + (right - left) // 2
+            if can_distribute(mid):
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
 ```
 
 #### Complexity 

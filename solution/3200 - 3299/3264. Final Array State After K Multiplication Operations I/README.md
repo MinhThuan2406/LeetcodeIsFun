@@ -100,23 +100,33 @@ Utilizable DSAs/Methods/Approaches:
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-class Solution {
-    public int[] getFinalState(int[] nums, int k, int multiplier) {
-        PriorityQueue<Integer> pq
-            = new PriorityQueue<>((i, j) -> nums[i] - nums[j] == 0 ? i - j : nums[i] - nums[j]);
-        for (int i = 0; i < nums.length; i++) {
-            pq.offer(i);
-        }
-        while (k-- > 0) {
-            int i = pq.poll();
-            nums[i] *= multiplier;
-            pq.offer(i);
-        }
-        return nums;
-    }
-}
+#### Python
+```python
+# 3264. Final Array State After K Multiplication Operations I
+
+# Simple Iteration / Min Heap
+# Runtime: 1ms
+
+# Complexity:
+# + Time: O(n)
+# + Space: O(1)
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def getFinalState(self, nums: List[int], k: int, multiplier: int) -> List[int]:
+        heap = [(val, i) for i, val in enumerate(nums)]
+        heapq.heapify(heap)
+
+        for _ in range(k):
+            val, i = heapq.heappop(heap)
+            new_val = val * multiplier
+            nums[i] = new_val
+            heapq.heappush(heap, (new_val, i))
+
+        return nums
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

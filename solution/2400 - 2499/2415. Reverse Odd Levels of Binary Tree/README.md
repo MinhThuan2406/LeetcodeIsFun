@@ -64,83 +64,62 @@ The nodes at level 3 were 1, 1, 1, 1, 2, 2, 2, 2, and are 2, 2, 2, 2, 1, 1, 1, 1
 
 ## Solutions
 <!-- solution:start -->
-#### Java
-```java
-// 2415. Reverse Odd Levels of Binary Tree
+#### Python
+```python
+# 2415. Reverse Odd Levels of Binary Tree
 
-// BFS, Array
-// Iterative Level-Order Traversal
-// Runtime: 7ms
+# BFS, Array
+# Iterative Level-Order Traversal
+# Runtime: 7ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-import java.util.LinkedList;
-import java.util.Queue;
+from collections import deque
+from typing import Optional
 
-abstract class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    TreeNode() {
-    }
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-    TreeNode(int val) {
-        this.val = val;
-    }
 
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+class Solution:
+    def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
 
-class Solution {
-    public TreeNode reverseOddLevels(TreeNode root) {
-        if (root == null)
-            return root;
+        q = deque([root])
+        is_odd_level = False
 
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        boolean isOddLevel = false;
+        while q:
+            size = len(q)
+            level_nodes = []
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            TreeNode[] levelNodes = new TreeNode[size];
-            int index = 0;
+            for _ in range(size):
+                node = q.popleft()
+                level_nodes.append(node)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
 
-            // Collect nodes of the current level
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                levelNodes[index++] = node;
+            if is_odd_level:
+                left, right = 0, len(level_nodes) - 1
+                while left < right:
+                    level_nodes[left].val, level_nodes[right].val = (
+                        level_nodes[right].val,
+                        level_nodes[left].val,
+                    )
+                    left += 1
+                    right -= 1
 
-                if (node.left != null)
-                    queue.offer(node.left);
-                if (node.right != null)
-                    queue.offer(node.right);
-            }
+            is_odd_level = not is_odd_level
 
-            // Reverse values of nodes if the level is odd
-            if (isOddLevel) {
-                int left = 0, right = levelNodes.length - 1;
-                while (left < right) {
-                    int temp = levelNodes[left].val;
-                    levelNodes[left].val = levelNodes[right].val;
-                    levelNodes[right].val = temp;
-                    left++;
-                    right--;
-                }
-            }
-
-            isOddLevel = !isOddLevel;
-        }
-
-        return root;
-    }
-}
+        return root
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

@@ -47,68 +47,47 @@ Utilizable DSAs/Methods/Approaches:
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 515. Find Largest Value in Each Tree Row
+#### Python
+```python
+# 515. Find Largest Value in Each Tree Row
 
-// BFS
-// Runtime: 2ms
+# BFS
+# Runtime: 2ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+from collections import deque
+from typing import List, Optional
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    TreeNode() {
-    }
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-    TreeNode(int val) {
-        this.val = val;
-    }
 
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+class Solution:
+    def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        ans = []
+        if not root:
+            return ans
 
-class Solution {
-    public List<Integer> largestValues(TreeNode root) {
-        List<Integer> ans = new ArrayList<>();
-        if (root == null) {
-            return ans;
-        }
+        q = deque([root])
+        while q:
+            t = float("-inf")
+            for _ in range(len(q)):
+                node = q.popleft()
+                t = max(t, node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            ans.append(t)
 
-        Deque<TreeNode> q = new ArrayDeque<>();
-        q.offer(root);
-
-        while (!q.isEmpty()) {
-            int t = Integer.MIN_VALUE;
-            for (int i = q.size(); i > 0; --i) {
-                TreeNode node = q.poll();
-                t = Math.max(t, node.val);
-                if (node.left != null) {
-                    q.offer(node.left);
-                }
-                if (node.right != null) {
-                    q.offer(node.right);
-                }
-            }
-            ans.add(t);
-        }
-        return ans;
-    }
-}
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

@@ -73,100 +73,74 @@ It can be proven that 3 is the minimum number of operations needed.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2471. Minimum Number of Operations to Sort a Binary Tree by Level
+#### Python
+```python
+# 2471. Minimum Number of Operations to Sort a Binary Tree by Level
 
-// BFS, Queue, ArrayList, Map
-// Runtime: 71ms
+# BFS, Queue, ArrayList, Map
+# Runtime: 71ms
 
-// Complexity:
-// + Time: O(n log(n))
-// + Space: O(n)
+# Complexity:
+# + Time: O(n log(k))
+# + Space: O(n)
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode() {}
- * TreeNode(int val) { this.val = val; }
- * TreeNode(int val, TreeNode left, TreeNode right) {
- * this.val = val;
- * this.left = left;
- * this.right = right;
- * }
- * }
- */
+from collections import deque
+from typing import List, Optional
 
-class Solution {
-    public int minimumOperations(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        int totalOperations = 0;
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            List<Integer> level = new ArrayList<>();
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-            // Collect all node values at the current level
-            for (int i = 0; i < size; i++) {
-                TreeNode node = queue.poll();
-                level.add(node.val);
 
-                if (node.left != null)
-                    queue.offer(node.left);
-                if (node.right != null)
-                    queue.offer(node.right);
-            }
+class Solution:
+    def minimumOperations(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
 
-            // Calculate minimum swaps for the current level
-            totalOperations += calculateMinimumSwaps(level);
-        }
+        queue = deque([root])
+        total_operations = 0
 
-        return totalOperations;
-    }
+        while queue:
+            size = len(queue)
+            level = []
 
-    private int calculateMinimumSwaps(List<Integer> level) {
-        int n = level.size();
-        int[] arr = level.stream().mapToInt(i -> i).toArray();
+            for _ in range(size):
+                node = queue.popleft()
+                level.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
 
-        // Map values to their sorted indices
-        Map<Integer, Integer> indexMap = new LinkedHashMap<>();
-        int[] sortedArr = arr.clone();
-        Arrays.sort(sortedArr);
-        for (int i = 0; i < n; i++) {
-            indexMap.put(sortedArr[i], i);
-        }
+            total_operations += self._calculate_minimum_swaps(level)
 
-        // Replace array values with their sorted indices
-        for (int i = 0; i < n; i++) {
-            arr[i] = indexMap.get(level.get(i));
-        }
+        return total_operations
 
-        // Count cycles for minimum swaps
-        boolean[] visited = new boolean[n];
-        int swapCount = 0;
+    def _calculate_minimum_swaps(self, level: List[int]) -> int:
+        n = len(level)
+        sorted_indices = {val: idx for idx, val in enumerate(sorted(level))}
+        arr = [sorted_indices[v] for v in level]
 
-        for (int i = 0; i < n; i++) {
-            if (visited[i] || arr[i] == i)
-                continue;
+        visited = [False] * n
+        swap_count = 0
 
-            int cycleLength = 0;
-            int j = i;
-            while (!visited[j]) {
-                visited[j] = true;
-                j = arr[j];
-                cycleLength++;
-            }
+        for i in range(n):
+            if visited[i] or arr[i] == i:
+                continue
 
-            swapCount += (cycleLength - 1);
-        }
+            cycle_length = 0
+            j = i
+            while not visited[j]:
+                visited[j] = True
+                j = arr[j]
+                cycle_length += 1
 
-        return swapCount;
-    }
-}
+            swap_count += cycle_length - 1
+
+        return swap_count
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

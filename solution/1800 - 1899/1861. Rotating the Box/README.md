@@ -69,45 +69,46 @@ Utilizable DSAs:
 ## Solution
 
 <!-- solution:start -->
-#### Java
-```java
-// 1861. Rotate the Box
+#### Python
+```python
+# 1861. Rotate the Box
 
-// Queue
-// Runtime: 20ms
+# Queue / Two Pointers
+# Runtime: 20ms
 
-// Complexity:
-// + Time: O(m * n)
-// + Space: O(m * n)
-// m is the number of rows in the original box
-// n is the number of columns in the original box
+# Complexity:
+# + Time: O(m * n)
+# + Space: O(m * n)
+# m is the number of rows in the original box
+# n is the number of columns in the original box
 
-class Solution {
-    public char[][] rotateTheBox(char[][] box) {
-        int m = box.length, n = box[0].length;
-        char[][] ans = new char[n][m];
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                ans[j][m - i - 1] = box[i][j];
-            }
-        }
-        for (int j = 0; j < m; ++j) {
-            Deque<Integer> q = new ArrayDeque<>();
-            for (int i = n - 1; i >= 0; --i) {
-                if (ans[i][j] == '*') {
-                    q.clear();
-                } else if (ans[i][j] == '.') {
-                    q.offer(i);
-                } else if (!q.isEmpty()) {
-                    ans[q.pollFirst()][j] = '#';
-                    ans[i][j] = '.';
-                    q.offer(i);
-                }
-            }
-        }
-        return ans;
-    }
-}
+from collections import deque
+from typing import List
+
+
+class Solution:
+    def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:
+        m, n = len(box), len(box[0])
+        ans = [[""] * m for _ in range(n)]
+
+        for i in range(m):
+            for j in range(n):
+                ans[j][m - i - 1] = box[i][j]
+
+        for j in range(m):
+            q = deque()
+            for i in range(n - 1, -1, -1):
+                if ans[i][j] == "*":
+                    q.clear()
+                elif ans[i][j] == ".":
+                    q.append(i)
+                elif q:
+                    empty_idx = q.popleft()
+                    ans[empty_idx][j] = "#"
+                    ans[i][j] = "."
+                    q.append(i)
+
+        return ans
 ```
 
 <!-- tabs:end -->

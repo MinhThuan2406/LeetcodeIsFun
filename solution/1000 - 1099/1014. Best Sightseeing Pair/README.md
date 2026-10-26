@@ -52,28 +52,29 @@ Utilizable DSAs/Methods/Approaches:
 We can enumerate $j$ from left to right while maintaining the maximum value of $values[i] + i$ for elements to the left of $j$, denoted as $mx$. For each $j$, the maximum score is $mx + values[j] - j$. The answer is the maximum of these maximum scores for all positions.
 The time complexity is $O(n)$, where $n$ is the length of the array $\textit{values}$. The space complexity is $O(1)$.
 <!-- tabs:start -->
-#### Java
-```java
-// 1014. Best Sightseeing Pair
+#### Python
+```python
+# 1014. Best Sightseeing Pair
 
-// Enumeration
-// Runtime: 4ms
+# Enumeration
+# Runtime: 4ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n)
+# + Space: O(1)
 
-class Solution {
-    public int maxScoreSightseeingPair(int[] values) {
-        int ans = 0, mx = 0;
-        for (int j = 0; j < values.length; ++j) {
-            ans = Math.max(ans, mx + values[j] - j);
-            mx = Math.max(mx, values[j] + j);
-        }
-        
-        return ans;
-    }
-}
+from typing import List
+
+
+class Solution:
+    def maxScoreSightseeingPair(self, values: List[int]) -> int:
+        ans = 0
+        mx = 0
+        for j in range(len(values)):
+            ans = max(ans, mx + values[j] - j)
+            mx = max(mx, values[j] + j)
+
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

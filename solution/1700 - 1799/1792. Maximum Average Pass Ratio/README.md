@@ -55,66 +55,38 @@ Finally, we sum up the pass rates of all classes, and then divide by the number 
 The time complexity is $O(n \times \log n)$, and the space complexity is $O(n)$. Here, $n$ is the number of classes.
 
 <!-- tabs:start -->
-#### Java
-```java
-// 1792. Maximum Average Pass Ratio
+#### Python
+```python
+# 1792. Maximum Average Pass Ratio
 
-// Priority Queue (Max-Heap)
-// Greedy Approach
-// Runtime: 329ms
+# Priority Queue (Max-Heap)
+# Greedy Approach
+# Runtime: 329ms
 
-// Complexity:
-// + Time: O(n * log(n))
-// + Space: O(n)
+# Complexity:
+# + Time: O(n * log(n))
+# + Space: O(n)
 
-import java.util.PriorityQueue;
+import heapq
+from typing import List
 
-class Solution {
-    public double maxAverageRatio(int[][] classes, int extraStudents) {
-        // Create a max-heap based on the improvement of the average ratio
-        PriorityQueue<ClassInfo> maxHeap = new PriorityQueue<>((a, b) -> Double.compare(b.increment, a.increment));
 
-        // Initialize the heap with the potential increments
-        for (int i = 0; i < classes.length; i++) {
-            double currentAvg = (double) classes[i][0] / classes[i][1];
-            double newAvg = (double) (classes[i][0] + 1) / (classes[i][1] + 1);
-            double increment = newAvg - currentAvg;
-            maxHeap.offer(new ClassInfo(increment, i));
-        }
+class Solution:
+    def maxAverageRatio(self, classes: List[List[int]], extraStudents: int) -> float:
+        # Heap elements: (-gain, pass_count, total_count)
+        def gain(p: int, t: int) -> float:
+            return (p + 1) / (t + 1) - p / t
 
-        // Distribute extra students to maximize the average ratio
-        while (extraStudents-- > 0) {
-            ClassInfo top = maxHeap.poll();
-            int idx = top.index;
-            classes[idx][0]++;
-            classes[idx][1]++;
+        max_heap = [(-gain(p, t), p, t) for p, t in classes]
+        heapq.heapify(max_heap)
 
-            double currentAvg = (double) classes[idx][0] / classes[idx][1];
-            double newAvg = (double) (classes[idx][0] + 1) / (classes[idx][1] + 1);
-            double increment = newAvg - currentAvg;
-            maxHeap.offer(new ClassInfo(increment, idx));
-        }
+        for _ in range(extraStudents):
+            cur_gain, p, t = heapq.heappop(max_heap)
+            p += 1
+            t += 1
+            heapq.heappush(max_heap, (-gain(p, t), p, t))
 
-        // Calculate the final average
-        double totalAvg = 0.0;
-        for (int[] clazz : classes) {
-            totalAvg += (double) clazz[0] / clazz[1];
-        }
-
-        return totalAvg / classes.length;
-    }
-
-    // Helper class to hold the increment and index
-    private static class ClassInfo {
-        double increment;
-        int index;
-
-        ClassInfo(double increment, int index) {
-            this.increment = increment;
-            this.index = index;
-        }
-    }
-}
+        return sum(p / t for _, p, t in max_heap) / len(classes)
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

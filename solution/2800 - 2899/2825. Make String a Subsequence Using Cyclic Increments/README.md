@@ -52,33 +52,31 @@ Therefore, false is returned.</pre>
 This problem actually requires us to determine whether a string $s$ is a subsequence of another string $t$. However, the characters do not have to match exactly. If two characters are the same, or one character is the next character of the other, they can match.
 The time complexity is $O(m + n)$, where $m$ and $n$ are the lengths of the strings $str1$ and $str2$ respectively. The space complexity is $O(1)$.
 <!-- tabs:start -->
-#### Java
-```java
-// 2825. Make String a Subsequence Using Cyclic Increments
+#### Python
+```python
+# 2825. Make String a Subsequence Using Cyclic Increments
 
-// Two-Pointer Greedy Matching
-// Runtime: 6ms
+# Two-Pointer Greedy Matching
+# Runtime: 6ms
 
-// Complexity:
-// + Time: O(n + m)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n + m)
+# + Space: O(1)
 
-class Solution {
-    public boolean canMakeSubsequence(String str1, String str2) {
-        int i = 0, j = 0; // Pointers for str1 and str2
-        
-        while (i < str1.length() && j < str2.length()) {
-            char c1 = str1.charAt(i);
-            char c2 = str2.charAt(j);
-            if (c1 == c2 || (c1 + 1 - 'a') % 26 + 'a' == c2) {
-                j++; 
-            }
-            i++;
-        }
-        
-        return j == str2.length();
-    }
-}
+
+class Solution:
+    def canMakeSubsequence(self, str1: str, str2: str) -> bool:
+        i, j = 0, 0
+        n1, n2 = len(str1), len(str2)
+
+        while i < n1 and j < n2:
+            c1, c2 = str1[i], str2[j]
+            next_c1 = chr((ord(c1) - ord("a") + 1) % 26 + ord("a"))
+            if c1 == c2 or next_c1 == c2:
+                j += 1
+            i += 1
+
+        return j == n2
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

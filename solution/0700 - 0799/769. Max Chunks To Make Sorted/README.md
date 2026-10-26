@@ -51,32 +51,31 @@ However, splitting into [1, 0], [2], [3], [4] is the highest number of chunks po
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 769. Max Chunks To Make Sorted
+#### Python
+```python
+# 769. Max Chunks To Make Sorted
 
-// Normal Iteration
-// Runtime: 1ms
+# Normal Iteration
+# Runtime: 1ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n)
+# + Space: O(1)
 
-class Solution {
-    public int maxChunksToSorted(int[] arr) {
-        int max = 0;
-        int chunks = 0;
+from typing import List
 
-        for (int i = 0; i < arr.length; i++) {
-            max = Math.max(max, arr[i]);
-            if (max == i) {
-                chunks++;
-            }
-        }
 
-        return chunks;
-    }
-}
+class Solution:
+    def maxChunksToSorted(self, arr: List[int]) -> int:
+        mx = 0
+        chunks = 0
+
+        for i, val in enumerate(arr):
+            mx = max(mx, val)
+            if mx == i:
+                chunks += 1
+
+        return chunks
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

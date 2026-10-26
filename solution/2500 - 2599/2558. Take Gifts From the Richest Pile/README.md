@@ -57,39 +57,32 @@ So, the total gifts remaining are 4.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2558. Take Gifts From the Richest Pile
+#### Python
+```python
+# 2558. Take Gifts From the Richest Pile
 
-// Max-Heap Priority Queue
-// Runtime: 6ms
+# Max-Heap Priority Queue
+# Runtime: 6ms
 
-// Complexity:
-// + Time: O(k * log(n) + n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(k * log(n) + n)
+# + Space: O(n)
 
-import java.util.PriorityQueue;
+import heapq
+import math
+from typing import List
 
-class Solution {
-    public long pickGifts(int[] gifts, int k) {
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
-        for (int gift : gifts) {
-            maxHeap.offer(gift);
-        }
 
-        for (int i = 0; i < k; i++) {
-            int largest = maxHeap.poll();
-            maxHeap.offer((int) Math.floor(Math.sqrt(largest)));
-        }
+class Solution:
+    def pickGifts(self, gifts: List[int], k: int) -> int:
+        max_heap = [-g for g in gifts]
+        heapq.heapify(max_heap)
 
-        long sum = 0;
-        while (!maxHeap.isEmpty()) {
-            sum += maxHeap.poll();
-        }
+        for _ in range(k):
+            largest = -heapq.heappop(max_heap)
+            heapq.heappush(max_heap, -int(math.isqrt(largest)))
 
-        return sum;
-    }
-}
+        return -sum(max_heap)
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

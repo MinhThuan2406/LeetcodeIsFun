@@ -48,37 +48,32 @@ Utilizable DSAs/Methods/Approaches:
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 3152. Special Array II
+#### Python
+```python
+# 3152. Special Array II
 
-// Record the Leftmost Special Array Position for Each Position
-// Runtime: 2ms
+# Record the Leftmost Special Array Position for Each Position
+# Runtime: 2ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-class Solution {
-    public boolean[] isArraySpecial(int[] nums, int[][] queries) {
-        int n = nums.length;
-        int[] d = new int[n];
-        for (int i = 1; i < n; ++i) {
-            if (nums[i] % 2 != nums[i - 1] % 2) {
-                d[i] = d[i - 1];
-            } else {
-                d[i] = i;
-            }
-        }
-        
-        int m = queries.length;
-        boolean[] ans = new boolean[m];
-        for (int i = 0; i < m; ++i) {
-            ans[i] = d[queries[i][1]] <= queries[i][0];
-        }
-        return ans;
-    }
-}
+from typing import List
+
+
+class Solution:
+    def isArraySpecial(self, nums: List[int], queries: List[List[int]]) -> List[bool]:
+        n = len(nums)
+        d = [0] * n
+
+        for i in range(1, n):
+            if nums[i] % 2 != nums[i - 1] % 2:
+                d[i] = d[i - 1]
+            else:
+                d[i] = i
+
+        return [d[r] <= l for l, r in queries]
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

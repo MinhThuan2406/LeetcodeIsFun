@@ -53,29 +53,28 @@ Utilizable DSAs/Methods/Approaches:
 <!-- solution:start -->
 ##### 1/ Brute Force
 <!-- tabs:start -->
-##### Java
-```java
-// 1346. Check If N and Its Double Exist
+##### Python
+```python
+# 1346. Check If N and Its Double Exist
 
-// Brute Force
-// Runtime: 2ms
+# Brute Force / Hash Set
+# Runtime: 2ms
 
-// Complexity:
-// + Time: O(n^2)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n^2)
+# + Space: O(1)
 
-class Solution {
-    public boolean checkIfExist(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length; j++) {
-                if (i != j && arr[i] == 2 * arr[j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-}
+from typing import List
+
+
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        n = len(arr)
+        for i in range(n):
+            for j in range(n):
+                if i != j and arr[i] == 2 * arr[j]:
+                    return True
+        return False
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

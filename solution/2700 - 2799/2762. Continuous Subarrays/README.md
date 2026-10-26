@@ -60,52 +60,49 @@ Total continuous subarrays = 3 + 2 + 1 = 6.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2762. Continuous Subarrays
+#### Python
+```python
+# 2762. Continuous Subarrays
 
-// Sliding Window with Deques
-// Runtime: 20ms
+# Sliding Window with Deques
+# Runtime: 20ms
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-import java.util.Deque;
-import java.util.LinkedList;
+from collections import deque
+from typing import List
 
-class Solution {
-    public long continuousSubarrays(int[] nums) {
-        int n = nums.length;
-        int left = 0;
-        long count = 0;
 
-        Deque<Integer> maxDeque = new LinkedList<>();
-        Deque<Integer> minDeque = new LinkedList<>();
+class Solution:
+    def continuousSubarrays(self, nums: List[int]) -> int:
+        n = len(nums)
+        left = 0
+        count = 0
 
-        for (int right = 0; right < n; right++) {
-            while (!maxDeque.isEmpty() && nums[maxDeque.peekLast()] <= nums[right]) {
-                maxDeque.pollLast();
-            }
-            maxDeque.offerLast(right);
+        max_deque = deque()
+        min_deque = deque()
 
-            while (!minDeque.isEmpty() && nums[minDeque.peekLast()] >= nums[right]) {
-                minDeque.pollLast();
-            }
-            minDeque.offerLast(right);
+        for right in range(n):
+            while max_deque and nums[max_deque[-1]] <= nums[right]:
+                max_deque.pop()
+            max_deque.append(right)
 
-            while (nums[maxDeque.peekFirst()] - nums[minDeque.peekFirst()] > 2) {
-                left++;
-                if (maxDeque.peekFirst() < left) maxDeque.pollFirst();
-                if (minDeque.peekFirst() < left) minDeque.pollFirst();
-            }
+            while min_deque and nums[min_deque[-1]] >= nums[right]:
+                min_deque.pop()
+            min_deque.append(right)
 
-            count += (right - left + 1);
-        }
+            while nums[max_deque[0]] - nums[min_deque[0]] > 2:
+                left += 1
+                if max_deque[0] < left:
+                    max_deque.popleft()
+                if min_deque[0] < left:
+                    min_deque.popleft()
 
-        return count;
-    }
-}
+            count += right - left + 1
+
+        return count
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

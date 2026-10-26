@@ -51,43 +51,39 @@ Utilizable DSAs:
 <!-- solution:start -->
 <!-- tabs:start -->
 
-#### Java
-```java
-// 1975. Maximum Matrix Sum
+#### Python
+```python
+# 1975. Maximum Matrix Sum
 
-// Array, Matrix
-// Runtime: 5ms
+# Array, Matrix
+# Runtime: 5ms
 
-// Complexity:
-// + Time: O(n^2)
-// + Space: O(1)
+# Complexity:
+# + Time: O(n^2)
+# + Space: O(1)
 
-class Solution {
-    public long maxMatrixSum(int[][] matrix) {
-        long totalSum = 0;
-        int negativeCount = 0;
-        int minAbsValue = Integer.MAX_VALUE;
+from typing import List
 
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                int value = matrix[i][j];
-                int absValue = Math.abs(value);
 
-                totalSum += absValue;
-                if (value < 0)
-                    negativeCount++;
-                if (absValue < minAbsValue)
-                    minAbsValue = absValue;
-            }
-        }
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        total_sum = 0
+        negative_count = 0
+        min_abs_value = float("inf")
 
-        if ((negativeCount & 1) == 1) {
-            totalSum -= 2L * minAbsValue;
-        }
+        for row in matrix:
+            for val in row:
+                abs_val = abs(val)
+                total_sum += abs_val
+                if val < 0:
+                    negative_count += 1
+                if abs_val < min_abs_value:
+                    min_abs_value = abs_val
 
-        return totalSum;
-    }
-}
+        if negative_count & 1:
+            total_sum -= 2 * min_abs_value
+
+        return total_sum
 ```
 
 <!-- tabs:end -->

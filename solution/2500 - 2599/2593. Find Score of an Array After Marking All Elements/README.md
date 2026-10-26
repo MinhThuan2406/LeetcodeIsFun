@@ -69,34 +69,41 @@ Finally, return the answer.
 The time complexity is $O(n \times \log n)$ and the space complexity is $O(n)$, where $n$ is the length of the array.
 
 <!-- tabs:start -->
-#### Java
-```java
-class Solution {
-    public long findScore(int[] nums) {
-        int n = nums.length;
-        boolean[] vis = new boolean[n];
-        PriorityQueue<int[]> q
-            = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
-        for (int i = 0; i < n; ++i) {
-            q.offer(new int[] {nums[i], i});
-        }
-        long ans = 0;
-        while (!q.isEmpty()) {
-            var p = q.poll();
-            ans += p[0];
-            vis[p[1]] = true;
-            for (int j : List.of(p[1] - 1, p[1] + 1)) {
-                if (j >= 0 && j < n) {
-                    vis[j] = true;
-                }
-            }
-            while (!q.isEmpty() && vis[q.peek()[1]]) {
-                q.poll();
-            }
-        }
-        return ans;
-    }
-}
+#### Python
+```python
+# 2593. Find Score of an Array After Marking All Elements
+
+# Priority Queue (Min Heap)
+# Runtime: 184ms
+
+# Complexity:
+# + Time: O(n * log(n))
+# + Space: O(n)
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def findScore(self, nums: List[int]) -> int:
+        n = len(nums)
+        vis = [False] * n
+        pq = [(val, i) for i, val in enumerate(nums)]
+        heapq.heapify(pq)
+
+        ans = 0
+        while pq:
+            val, i = heapq.heappop(pq)
+            if vis[i]:
+                continue
+            ans += val
+            vis[i] = True
+            if i > 0:
+                vis[i - 1] = True
+            if i + 1 < n:
+                vis[i + 1] = True
+
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->
@@ -117,28 +124,41 @@ Finally, return the answer.
 The time complexity is $O(n \times \log n)$ and the space complexity is $O(n)$, where $n$ is the length of the array.
 
 <!-- tabs:start -->
-#### Java
-```java
-class Solution {
-    public long findScore(int[] nums) {
-        int n = nums.length;
-        boolean[] vis = new boolean[n + 2];
-        Integer[] idx = new Integer[n];
-        for (int i = 0; i < n; ++i) {
-            idx[i] = i;
-        }
-        Arrays.sort(idx, (i, j) -> nums[i] - nums[j]);
-        long ans = 0;
-        for (int i : idx) {
-            if (!vis[i + 1]) {
-                ans += nums[i];
-                vis[i] = true;
-                vis[i + 2] = true;
-            }
-        }
-        return ans;
-    }
-}
+#### Python
+```python
+# 2593. Find Score of an Array After Marking All Elements
+
+# Priority Queue (Min Heap)
+# Runtime: 184ms
+
+# Complexity:
+# + Time: O(n * log(n))
+# + Space: O(n)
+
+import heapq
+from typing import List
+
+
+class Solution:
+    def findScore(self, nums: List[int]) -> int:
+        n = len(nums)
+        vis = [False] * n
+        pq = [(val, i) for i, val in enumerate(nums)]
+        heapq.heapify(pq)
+
+        ans = 0
+        while pq:
+            val, i = heapq.heappop(pq)
+            if vis[i]:
+                continue
+            ans += val
+            vis[i] = True
+            if i > 0:
+                vis[i - 1] = True
+            if i + 1 < n:
+                vis[i + 1] = True
+
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

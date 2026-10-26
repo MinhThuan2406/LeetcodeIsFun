@@ -56,45 +56,42 @@ Another correct solution is to remove the subarray [3,10,4].
 <!-- solution:start -->
 <!-- tabs:start -->
 
-#### Java
+#### Python
+```python
+# 1574. Shortest Subarray to be Removed to Make Array Sorted
 
-```java
-// 1574. Shortest Subarray to be Removed to Make Array Sorted
+# Two-pointer
+# Runtime: 1ms
 
-// Two-pointer
-// Runtime: 1ms
+# Complexity:
+# + Time: O(n), with n is the array length
+# + Space: O(1)
 
-// Complexity:
-// + Time: O(n), with n is the array length
-// + Space: O(1)
+from typing import List
 
-class Solution {
-    public int findLengthOfShortestSubarray(int[] arr) {
-        int n = arr.length;
-        int left = 0;
 
-        while (left + 1 < n && arr[left] <= arr[left + 1]) {
-            left++;
-        }
+class Solution:
+    def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
+        n = len(arr)
+        left = 0
 
-        if (left == n - 1) return 0;
+        while left + 1 < n and arr[left] <= arr[left + 1]:
+            left += 1
 
-        int right = n - 1;
-        while (right > 0 && arr[right - 1] <= arr[right]) {
-            right--;
-        }
+        if left == n - 1:
+            return 0
 
-        int minLength = Math.min(right, n - left - 1);
-        for (int i = 0; i <= left; i++) {
-            while (right < n && arr[i] > arr[right]) {
-                right++;
-            }
-            minLength = Math.min(minLength, right - i - 1);
-        }
+        right = n - 1
+        while right > 0 and arr[right - 1] <= arr[right]:
+            right -= 1
 
-        return minLength;
-    }
-}
+        min_length = min(right, n - left - 1)
+        for i in range(left + 1):
+            while right < n and arr[i] > arr[right]:
+                right += 1
+            min_length = min(min_length, right - i - 1)
+
+        return min_length
 ```
 
 #### Complexity 

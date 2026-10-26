@@ -89,81 +89,74 @@ The time complexity is $O((n + m) \times \log n + m \times \log m)$, and the spa
 Similar problems:
 -   [2736. Maximum Sum Queries](https://github.com/doocs/leetcode/blob/main/solution/2700-2799/2736.Maximum%20Sum%20Queries/README_EN.md)
 <!-- tabs:start -->
-#### Java
-```java
-// 2940. Find Building Where Alice and Bob Can Meet
+#### Python
+```python
+# 2940. Find Building Where Alice and Bob Can Meet
 
-// Binary Indexed Tree, Sorting, Binary Search, 2-Pointer Traversal
-// Runtime: 84ms    
+# Binary Indexed Tree, Sorting, Binary Search
+# Runtime: 84ms    
 
-// Complexity:
-// + Time: O((n + m) log(n) + n + m log(m))
-// + Space: O(n + m)
+# Complexity:
+# + Time: O((n + m) log(n) + n + m log(m))
+# + Space: O(n + m)
 
-class BinaryIndexedTree {
-    private final int inf = 1 << 30;
-    private int n;
-    private int[] c;
+import bisect
+from typing import List
 
-    public BinaryIndexedTree(int n) {
-        this.n = n;
-        c = new int[n + 1];
-        Arrays.fill(c, inf);
-    }
 
-    public void update(int x, int v) {
-        while (x <= n) {
-            c[x] = Math.min(c[x], v);
-            x += x & -x;
-        }
-    }
+class BinaryIndexedTree:
+    def __init__(self, n: int):
+        self.inf = 1 << 30
+        self.n = n
+        self.c = [self.inf] * (n + 1)
 
-    public int query(int x) {
-        int mi = inf;
-        while (x > 0) {
-            mi = Math.min(mi, c[x]);
-            x -= x & -x;
-        }
-        return mi == inf ? -1 : mi;
-    }
-}
+    def update(self, x: int, v: int) -> None:
+        while x <= self.n:
+            self.c[x] = min(self.c[x], v)
+            x += x & -x
 
-class Solution {
-    public int[] leftmostBuildingQueries(int[] heights, int[][] queries) {
-        int n = heights.length;
-        int m = queries.length;
-        for (int i = 0; i < m; ++i) {
-            if (queries[i][0] > queries[i][1]) {
-                queries[i] = new int[] {queries[i][1], queries[i][0]};
-            }
-        }
-        Integer[] idx = new Integer[m];
-        for (int i = 0; i < m; ++i) {
-            idx[i] = i;
-        }
-        Arrays.sort(idx, (i, j) -> queries[j][1] - queries[i][1]);
-        int[] s = heights.clone();
-        Arrays.sort(s);
-        int[] ans = new int[m];
-        int j = n - 1;
-        BinaryIndexedTree tree = new BinaryIndexedTree(n);
-        for (int i : idx) {
-            int l = queries[i][0], r = queries[i][1];
-            while (j > r) {
-                int k = n - Arrays.binarySearch(s, heights[j]) + 1;
-                tree.update(k, j);
-                --j;
-            }
-            if (l == r || heights[l] < heights[r]) {
-                ans[i] = r;
-            } else {
-                int k = n - Arrays.binarySearch(s, heights[l]);
-                ans[i] = tree.query(k);
-            }
-        }
-        return ans;
-    }
-}
+    def query(self, x: int) -> int:
+        mi = self.inf
+        while x > 0:
+            mi = min(mi, self.c[x])
+            x -= x & -x
+        return -1 if mi == self.inf else mi
+
+
+class Solution:
+    def leftmostBuildingQueries(
+        self, heights: List[int], queries: List[List[int]]
+    ) -> List[int]:
+        n = len(heights)
+        m = len(queries)
+
+        for i in range(m):
+            if queries[i][0] > queries[i][1]:
+                queries[i] = [queries[i][1], queries[i][0]]
+
+        idx = list(range(m))
+        idx.sort(key=lambda i: -queries[i][1])
+
+        s = sorted(heights)
+        ans = [-1] * m
+        j = n - 1
+        tree = BinaryIndexedTree(n)
+
+        for i in idx:
+            l, r = queries[i]
+            while j > r:
+                # Rank of heights[j] in descending order (1-indexed)
+                k = n - bisect.bisect_left(s, heights[j])
+                tree.update(k, j)
+                j -= 1
+
+            if l == r or heights[l] < heights[r]:
+                ans[i] = r
+            else:
+                k = n - bisect.bisect_right(s, heights[l])
+                ans[i] = tree.query(k)
+
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

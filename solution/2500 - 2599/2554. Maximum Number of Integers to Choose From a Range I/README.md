@@ -59,45 +59,37 @@ They are from the range [1, 7], all did not appear in banned, and their sum is 2
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 2554. Maximum Number of Integers to Choose From a Range I
+#### Python
+```python
+# 2554. Maximum Number of Integers to Choose From a Range I
 
-// Sort and Greedy Selection
-// Runtime: 47ms
+# Sort and Greedy Selection
+# Runtime: 47ms
 
-// Complexity:
-// + Time: O(b + n)
-// + Space: O(b)
+# Complexity:
+# + Time: O(b + n)
+# + Space: O(b)
 
-import java.util.HashSet;
+from typing import List
 
-class Solution {
-    public int maxCount(int[] banned, int n, int maxSum) {
-        HashSet<Integer> bannedSet = new HashSet<>();
-        for (int num : banned) {
-            bannedSet.add(num);
-        }
 
-        int currentSum = 0;
-        int count = 0;
+class Solution:
+    def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:
+        banned_set = set(banned)
+        current_sum = 0
+        count = 0
 
-        for (int i = 1; i <= n; i++) {
-            if (bannedSet.contains(i)) {
-                continue; 
-            }
+        for i in range(1, n + 1):
+            if i in banned_set:
+                continue
 
-            if (currentSum + i > maxSum) {
-                break; 
-            }
+            if current_sum + i > maxSum:
+                break
 
-            currentSum += i;
-            count++;
-        }
+            current_sum += i
+            count += 1
 
-        return count;
-    }
-}
+        return count
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

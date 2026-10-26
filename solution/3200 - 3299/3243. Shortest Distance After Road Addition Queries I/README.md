@@ -57,68 +57,52 @@ Utilizable DSAs:
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
-```java
-// 3243. Shortest Distance After Road Addition Queries I
+#### Python
+```python
+# 3243. Shortest Distance After Road Addition Queries I
 
-// BFS 
-// Runtime: 91ms
+# BFS 
+# Runtime: 91ms
 
-// Complexity:
-// + Time: O(queries.length * (n + edges))
-// + Space: O(n + edges)
+# Complexity:
+# + Time: O(queries.length * (n + edges))
+# + Space: O(n + edges)
 
-import java.util.*;
+from collections import deque
+from typing import List
 
-class Solution {
-    public int[] shortestDistanceAfterQueries(int n, int[][] queries) {
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
-        }
 
-        // Initialize the linear graph: i -> i+1
-        for (int i = 0; i < n - 1; i++) {
-            graph.get(i).add(i + 1);
-        }
+class Solution:
+    def shortestDistanceAfterQueries(
+        self, n: int, queries: List[List[int]]
+    ) -> List[int]:
+        graph = [[] for _ in range(n)]
+        for i in range(n - 1):
+            graph[i].append(i + 1)
 
-        int[] result = new int[queries.length];
+        def bfs() -> int:
+            queue = deque([(0, 0)])
+            visited = [False] * n
+            visited[0] = True
 
-        for (int i = 0; i < queries.length; i++) {
-            int u = queries[i][0];
-            int v = queries[i][1];
-            graph.get(u).add(v); // Add the new road
+            while queue:
+                node, dist = queue.popleft()
+                if node == n - 1:
+                    return dist
 
-            result[i] = bfs(graph, n);
-        }
+                for neighbor in graph[node]:
+                    if not visited[neighbor]:
+                        visited[neighbor] = True
+                        queue.append((neighbor, dist + 1))
 
-        return result;
-    }
+            return -1
 
-    private int bfs(List<List<Integer>> graph, int n) {
-        Queue<int[]> queue = new LinkedList<>();
-        boolean[] visited = new boolean[n];
-        queue.offer(new int[] { 0, 0 }); // {node, distance}
-        visited[0] = true;
+        result = []
+        for u, v in queries:
+            graph[u].append(v)
+            result.append(bfs())
 
-        while (!queue.isEmpty()) {
-            int[] curr = queue.poll();
-            int node = curr[0], dist = curr[1];
-
-            if (node == n - 1)
-                return dist;
-
-            for (int neighbor : graph.get(node)) {
-                if (!visited[neighbor]) {
-                    visited[neighbor] = true;
-                    queue.offer(new int[] { neighbor, dist + 1 });
-                }
-            }
-        }
-
-        return Integer.MAX_VALUE; // Should never reach here
-    }
-}
+        return result
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

@@ -44,41 +44,39 @@ Potential Data Structures & Algorithms:
 
 <!-- solution:start -->
 
-#### Java
-```java
-// 862. Shortest Subarray with Sum at Least K
+#### Python
+```python
+# 862. Shortest Subarray with Sum at Least K
 
-// Queue, Array, Binary Search, Prefix Sum, Sliding Window, Monotonic Queue, Heap (Priority Queue)
-// Runtime: 39ms
+# Queue, Array, Binary Search, Prefix Sum, Sliding Window, Monotonic Queue, Heap (Priority Queue)
+# Runtime: 39ms
 
-// Complexity
-// + Time: O(n * |k|)
-// + Space: O(n)
+# Complexity
+# + Time: O(n * |k|)
+# + Space: O(n)
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+from collections import deque
+from typing import List
 
-class Solution {
-    public int shortestSubarray(int[] nums, int k) {
-        int n = nums.length;
-        long[] s = new long[n + 1];
-        for (int i = 0; i < n; ++i) {
-            s[i + 1] = s[i] + nums[i];
-        }
-        Deque<Integer> q = new ArrayDeque<>();
-        int ans = n + 1;
-        for (int i = 0; i <= n; ++i) {
-            while (!q.isEmpty() && s[i] - s[q.peek()] >= k) {
-                ans = Math.min(ans, i - q.poll());
-            }
-            while (!q.isEmpty() && s[q.peekLast()] >= s[i]) {
-                q.pollLast();
-            }
-            q.offer(i);
-        }
-        return ans > n ? -1 : ans;
-    }
-}
+
+class Solution:
+    def shortestSubarray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        s = [0] * (n + 1)
+        for i in range(n):
+            s[i + 1] = s[i] + nums[i]
+
+        q = deque()
+        ans = n + 1
+
+        for i in range(n + 1):
+            while q and s[i] - s[q[0]] >= k:
+                ans = min(ans, i - q.popleft())
+            while q and s[q[-1]] >= s[i]:
+                q.pop()
+            q.append(i)
+
+        return -1 if ans > n else ans
 ```
 
 <!-- tabs:end -->

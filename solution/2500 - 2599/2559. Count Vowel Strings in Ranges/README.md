@@ -5,50 +5,39 @@
 <!-- solution:start -->
 ### 1/ Prefix Sum Array, Range Query Handling
 <!-- tabs:start -->
-##### Java
-```java
-// 2559. Count Vowel Strings in Ranges
+##### Python
+```python
+# 2559. Count Vowel Strings in Ranges
 
-// 1st Approach
-// Prefix Sum Array, Range Query Handling
-// Runtime: 6ms
+# 1st Approach
+# Prefix Sum Array, Range Query Handling
+# Runtime: 6ms
 
-// Complexity:
-// + Time: O(n + m)
-// + Space: O(n + m)
+# Complexity:
+# + Time: O(n + m)
+# + Space: O(n + m)
 
-class Solution {
-    public int[] vowelStrings(String[] words, int[][] queries) {
-        int n = words.length;
-        int[] valid = new int[n];
-        for (int i = 0; i < n; i++) {
-            if (isVowel(words[i].charAt(0)) && isVowel(words[i].charAt(words[i].length() - 1))) {
-                valid[i] = 1;
-            } else {
-                valid[i] = 0;
-            }
-        }
+from typing import List
 
-        // Prefix sum array
-        int[] prefix = new int[n];
-        prefix[0] = valid[0];
-        for (int i = 1; i < n; i++) {
-            prefix[i] = prefix[i - 1] + valid[i];
-        }
 
-        // Answer queries
-        int[] result = new int[queries.length];
-        for (int q = 0; q < queries.length; q++) {
-            int li = queries[q][0], ri = queries[q][1];
-            result[q] = prefix[ri] - (li > 0 ? prefix[li - 1] : 0);
-        }
-        return result;
-    }
+class Solution:
+    def vowelStrings(
+        self, words: List[str], queries: List[List[int]]
+    ) -> List[int]:
+        vowels = set("aeiou")
+        n = len(words)
+        valid = [1 if words[i][0] in vowels and words[i][-1] in vowels else 0 for i in range(n)]
 
-    private boolean isVowel(char c) {
-        return "aeiou".indexOf(c) != -1;
-    }
-}
+        prefix = [0] * n
+        prefix[0] = valid[0]
+        for i in range(1, n):
+            prefix[i] = prefix[i - 1] + valid[i]
+
+        result = []
+        for li, ri in queries:
+            result.append(prefix[ri] - (prefix[li - 1] if li > 0 else 0))
+
+        return result
 ```
 <!-- tabs:end -->
 
@@ -58,56 +47,39 @@ class Solution {
 
 ### 2/ Preprocessing + Binary Search
 <!-- tabs:start -->
-##### Java
-```java
-// 2559. Count Vowel Strings in Ranges
+##### Python
+```python
+# 2559. Count Vowel Strings in Ranges
 
-// 2nd Approach
-// DSs: ArrayList, Set, Array    
-// As: Vowel Checking, Binary Search  
-// Runtime: 36ms
+# 1st Approach
+# Prefix Sum Array, Range Query Handling
+# Runtime: 6ms
 
-// Complexity:
-// + Time: O(n + m * log k)
-// + Space: O(k + m)
+# Complexity:
+# + Time: O(n + m)
+# + Space: O(n + m)
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+from typing import List
 
-class Solution {
-    private List<Integer> nums = new ArrayList<>();
 
-    public int[] vowelStrings(String[] words, int[][] queries) {
-        Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u');
-        for (int i = 0; i < words.length; ++i) {
-            char a = words[i].charAt(0), b = words[i].charAt(words[i].length() - 1);
-            if (vowels.contains(a) && vowels.contains(b)) {
-                nums.add(i);
-            }
-        }
-        int m = queries.length;
-        int[] ans = new int[m];
-        for (int i = 0; i < m; ++i) {
-            int l = queries[i][0], r = queries[i][1];
-            ans[i] = search(r + 1) - search(l);
-        }
-        return ans;
-    }
+class Solution:
+    def vowelStrings(
+        self, words: List[str], queries: List[List[int]]
+    ) -> List[int]:
+        vowels = set("aeiou")
+        n = len(words)
+        valid = [1 if words[i][0] in vowels and words[i][-1] in vowels else 0 for i in range(n)]
 
-    private int search(int x) {
-        int l = 0, r = nums.size();
-        while (l < r) {
-            int mid = (l + r) >> 1;
-            if (nums.get(mid) >= x) {
-                r = mid;
-            } else {
-                l = mid + 1;
-            }
-        }
-        return l;
-    }
-}
+        prefix = [0] * n
+        prefix[0] = valid[0]
+        for i in range(1, n):
+            prefix[i] = prefix[i - 1] + valid[i]
+
+        result = []
+        for li, ri in queries:
+            result.append(prefix[ri] - (prefix[li - 1] if li > 0 else 0))
+
+        return result
 ```
 <!-- tabs:end -->
 <!-- solution:end -->

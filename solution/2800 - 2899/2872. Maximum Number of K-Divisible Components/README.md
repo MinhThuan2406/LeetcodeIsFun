@@ -58,51 +58,45 @@ It can be shown that no other valid split has more than 3 connected components.
 ## Solutions
 <!-- solution:start -->
 <!-- tabs:start -->
-#### Java
+#### Python
+```python
+# 2872. Maximum Number of K-Divisible Components
 
-```java
-// 2872. Maximum Number of K-Divisible Components
+# Graph, DFS
+# Graph Construction & DFS Traversal
+# Runtime: 21ms
 
-// Graph, DFS
-// Graph Construction & DFS Traversal
-// Runtime: 21ms
+# Complexity:
+# + Time: O(n)
+# + Space: O(n)
 
-// Complexity:
-// + Time: O(n)
-// + Space: O(n)
+from typing import List
 
-class Solution {
-    public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
-      List<Integer>[] graph = new List[n];
-  
-      for (int i = 0; i < n; i++)
-        graph[i] = new ArrayList<>();
-  
-      for (int[] edge : edges) {
-        final int u = edge[0];
-        final int v = edge[1];
-        graph[u].add(v);
-        graph[v].add(u);
-      }
-  
-      dfs(graph, 0, /*prev=*/-1, values, k);
-      return ans;
-    }
-  
-    private int ans = 0;
-  
-    private long dfs(List<Integer>[] graph, int u, int prev, int[] values, int k) {
-      long treeSum = values[u];
-  
-      for (int v : graph[u])
-        if (v != prev)
-          treeSum += dfs(graph, v, u, values, k);
-  
-      if (treeSum % k == 0)
-        ++ans;
-      return treeSum;
-    }
-  }
+
+class Solution:
+    def maxKDivisibleComponents(
+        self, n: int, edges: List[List[int]], values: List[int], k: int
+    ) -> int:
+        graph = [[] for _ in range(n)]
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        ans = 0
+
+        def dfs(u: int, prev: int) -> int:
+            nonlocal ans
+            tree_sum = values[u]
+            for v in graph[u]:
+                if v != prev:
+                    tree_sum += dfs(v, u)
+
+            if tree_sum % k == 0:
+                ans += 1
+            return tree_sum
+
+        dfs(0, -1)
+        return ans
 ```
 <!-- tabs:end -->
 <!-- solution:end -->
