@@ -8,7 +8,6 @@
 # + Time: O(log|x|)
 # + Space: O(1)
 
-
 class Solution:
     def reverse(self, x: int) -> int:
         INT_MIN, INT_MAX = -2**31, 2**31 - 1
