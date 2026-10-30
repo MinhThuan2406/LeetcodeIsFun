@@ -1,19 +1,22 @@
 # 3970. Shortest Path With At Most K Consecutive Identical Characters | Medium
 # https://leetcode.com/problems/shortest-path-with-at-most-k-consecutive-identical-characters/
-# Dijkstra, Priority Queue, 2D Array
+# Dijkstra, Priority Queue, State Graph, 2D Array
 # Complexity:
-# + Time: O((n + m) log(n * k)), n = number of nodes, m = number of edges
-# + Space: O(n * k)
+# + Time: O(k * (n + m) * log(n * k)), n = number of nodes, m = number of edges
+# + Space: O(n * k + m)
+# State: (node, current run length of identical labels)
 
 from heapq import heappush, heappop
+from typing import List
+
 
 class Solution:
-    def shortestPath(self, n: int, edges: List[List[int]], labels: str, k: int) -> int: # type: ignore
+    def shortestPath(self, n: int, edges: List[List[int]], labels: str, k: int) -> int:
         adj = [[] for _ in range(n)]
         for u, v, w in edges:
             adj[u].append((v, w))
 
-        INF = float('inf')
+        INF = 10**18
         dist = [[INF] * (k + 1) for _ in range(n)]
         min_run = [k + 1] * n
 
