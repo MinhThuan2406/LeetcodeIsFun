@@ -1,9 +1,9 @@
-# Problem Name | Difficulty
-# Problem Link
-# Methods & Approaches
+# |
+# https://leetcode.com/problems/
+# Approaches, Methods
 # Complexity:
-# + Time: O()
-# + Space: O()
+# + Time:
+# + Space:
 
 class Solution:
     pass
