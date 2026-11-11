@@ -1,6 +1,6 @@
 # 3789. Minimum Cost to Acquire Required Items | Medium
 # https://leetcode.com/problems/minimum-cost-to-acquire-required-items/
-# Math, Greedy, Brute Force, Enumeration
+# Brute Force, Math
 # Complexity:
 # + Time: O(1)
 # + Space: O(1)
