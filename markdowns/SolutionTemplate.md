@@ -1,6 +1,6 @@
 # |
 # https://leetcode.com/problems/
-# Approaches, Methods
+# Methods (keyword)
 # Complexity:
 # + Time:
 # + Space:
