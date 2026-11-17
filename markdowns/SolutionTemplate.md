@@ -1,9 +1,9 @@
-# |
+# X. .... | Easy/Medium/Hard
 # https://leetcode.com/problems/
-# Methods (keyword)
+# Methods (keyword):
 # Complexity:
-# + Time:
-# + Space:
+# + Time: O()
+# + Space: O()
 
 class Solution:
     pass
